@@ -1,24 +1,67 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import './App.css';
-import { fetchMonitors } from './monitors-api.js';
-//import { render } from '@testing-library/react';
 
-class App extends React.Component {
-  state = {
-    monitors: []
-  }
+import DetailPage from './detailPage.js';
+import CreatePage from './createPage.js';
+import ListPage from './listPage.js';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link
+} from 'react-router-dom';
 
-  componentDidMount = async () => {
-    const data = await fetchMonitors()
-    this.setState({
-      monitors: data.body
-    });
-  }
-
+export default class App extends Component {
   render() {
     return (
-      <div className="app">
+      <div className="App">
+      <header className="App-header">    
+          <Router>
+              <main>
+
+              <div className="sidebar">
+              <Link to='/create'>Create</Link>
+              <Link to='/'>List</Link>
+              </div>
+              <div className="content">
+              <Switch>
+                  <Route 
+                      path="/" 
+                      exact
+                      render={(routerProps) => <ListPage {...routerProps} />} 
+                  />
+                  <Route 
+                      path="/create" 
+                      exact
+                      render={(routerProps) => <CreatePage {...routerProps} />} 
+                  />
+                  <Route 
+                      path="/detail/:id" 
+                      exact
+                      render={(routerProps) => <DetailPage {...routerProps} />} 
+                  />
+              </Switch>
+              </div>
+              
+              </main>
+              </Router>
+      </header>
+      </div>
+    )
+  }
+}
+
+
+
+/* componentDidMount = async () => {
+  const data = await fetchMonitors()
+  this.setState({
+    monitors: data.body
+  });
+} */
+
+/* <div className="app">
           <h1>Monitor List</h1>
             <div className="items">
             {
@@ -36,8 +79,4 @@ class App extends React.Component {
               })
             }
             </div>
-      </div>
-    )
-  }
-}
-export default App;
+      </div> */
