@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createMonitor } from './monitors-api.js';
+import { createMonitor, fetchBrands } from './monitors-api.js';
 import './App.css';
 
 export default class CreatePage extends Component {
@@ -7,32 +7,44 @@ export default class CreatePage extends Component {
         cool_factor: 7,
         type: 'monitor',
         is_sick: false,
-        brand: 'Genelec',
+        //brand: 'Genelec',
         model: '8010A',
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSXvdxydVBGi8bDW0dDSMxDEfiaYXF49Au1SG4kfNmYTdbayh3NRcJnisqicjctk3bdj0W9qdg&usqp=CAc', 
     }
 
+    componentDidMount = async () => {
+        const brandsData = await fetchBrands();
+        this.setState({
+            brands: brandsData.body
+        })
+    }
+
     handleSubmit = async (e) => {
         e.preventDefault();
-
+        try {
         await createMonitor({
           cool_factor: this.state.cool_factor,
           type: this.state.type,
           is_sick: this.state.is_sick,
-          brand: this.state.brand,
+          //brand: this.state.brand,
           model: this.state.model,
-          image: this.state.image
+          image: this.state.image,
+          brands_id: this.state.brand_id
         });
 
         this.setState({
           cool_factor: 7,
           type: '',
           is_sick: '',
-          brand: '',
+          //brand: '',
           model: '',
           image: '',
-        })
+          brands_id: 1,
+        });
+    } catch(e) {
+        console.log(e.message)
     }
+}
 
     handleCoolFactorChange = e => {
         this.setState({ cool_factor: e.target.value });
@@ -46,9 +58,9 @@ export default class CreatePage extends Component {
         this.setState({ is_sick: e.target.value });
     }
 
-    handleBrandChange = e => {
+    /*handleBrandChange = e => {
         this.setState({ brand: e.target.value });
-    }
+    }*/
 
     handleModelChange = e => {
         this.setState({ model: e.target.value });
