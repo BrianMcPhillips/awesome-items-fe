@@ -4,25 +4,27 @@ import { fetchMonitor, fetchBrands, deleteMonitor, updateMonitor } from './monit
 export default class DetailPage extends Component {
     state = {
         monitor: {},
-        cool_factor: 7,
+        cool_factor: 1,
         type: 'monitor',
-        is_sick: false,
-        //brand: '',
-        model: '8010A',
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSXvdxydVBGi8bDW0dDSMxDEfiaYXF49Au1SG4kfNmYTdbayh3NRcJnisqicjctk3bdj0W9qdg&usqp=CAc',
+        is_sick: true,
+        model: '',
+        image: '',
         brands_id: 1,
         brands: [],
 
     }
 
     componentDidMount = async () => {
+        
         const data = await fetchMonitor(this.props.match.params.id)
+        
         const brandsData = await fetchBrands();
+        debugger
         const matchingBrand = brandsData.body.find(brand => brand.name === data.body.brands_id);
-        console.log(matchingBrand);
+        
         this.setState({
           brands: brandsData.body,
-          monitor: data.body,
+          monitor: data.body.id,
           cool_factor: data.body.cool_factor,
           type: data.body.type,
           is_sick: data.body.is_sick,
@@ -38,7 +40,6 @@ export default class DetailPage extends Component {
           e.preventDefault();
 
           try {
-              console.log(this.props.match.params.id)
               await updateMonitor(
                   this.props.match.params.id, 
                   {
@@ -64,6 +65,7 @@ export default class DetailPage extends Component {
                     brands_id: 1,
                     monitor: updatedMonitor.body,
                 });
+                this.props.history.push('/');
             } catch(e) {
                     console.log(e.message)
                 }
@@ -78,9 +80,6 @@ export default class DetailPage extends Component {
       handleIsSickChange = e => {
           this.setState({ is_sick: e.target.value});
       }
-      /*handleBrandChange = e => {
-          this.setState({ brand: e.target.value});
-      }*/
       handleModelChange = e => {
         this.setState({ model: e.target.value});
       }
@@ -120,7 +119,7 @@ export default class DetailPage extends Component {
                 </label>
                 <label>
                     Is Sick?: 
-                    <input type="checkbox" value="true" onChange={this.handleIsSickChange} />
+                    <input type="checkbox" value="true" checked={this.state.is_sick && 'checked'}onChange={this.handleIsSickChange} />
                 </label>
                 <label>
                     Model: 
@@ -134,7 +133,7 @@ export default class DetailPage extends Component {
                     Brand:
                     <select onChange={this.handleBrandsChange} value={this.state.brands_id}>
                         {
-                            this.state.brands.map((brand) => <option value={brand.id}>{brand.name}</option>)
+                            this.state.brands.map((brand, i) => <option key={'brandOption' + i} value={brand.id}>{brand.name}</option>)
                         }
                     </select>
                 </label>

@@ -27,7 +27,7 @@ class ListPage extends React.Component {
                 <img src={monitor.image} alt={monitor.model} />
                 <p>Brand: {monitor.brands_id}</p>
                 <p>Model: {monitor.model}</p>
-                <p>Is Sick?: {monitor.is_sick}</p>
+                <p>Is Sick?: {monitor.is_sick ? 'Yes' : 'No'}</p>
                 <p>Coolness Factor: {monitor.cool_factor}</p>
               </Link>
             })

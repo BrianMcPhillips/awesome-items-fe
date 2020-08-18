@@ -7,9 +7,10 @@ export default class CreatePage extends Component {
         cool_factor: 7,
         type: 'monitor',
         is_sick: false,
-        //brand: 'Genelec',
         model: '8010A',
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSXvdxydVBGi8bDW0dDSMxDEfiaYXF49Au1SG4kfNmYTdbayh3NRcJnisqicjctk3bdj0W9qdg&usqp=CAc', 
+        brands_id: 1,
+        brands: [],
     }
 
     componentDidMount = async () => {
@@ -26,21 +27,22 @@ export default class CreatePage extends Component {
           cool_factor: this.state.cool_factor,
           type: this.state.type,
           is_sick: this.state.is_sick,
-          //brand: this.state.brand,
           model: this.state.model,
           image: this.state.image,
           brands_id: this.state.brand_id
+        
         });
 
         this.setState({
           cool_factor: 7,
           type: '',
           is_sick: '',
-          //brand: '',
           model: '',
           image: '',
           brands_id: 1,
+        
         });
+        this.props.history.push('/');
     } catch(e) {
         console.log(e.message)
     }
@@ -58,9 +60,9 @@ export default class CreatePage extends Component {
         this.setState({ is_sick: e.target.value });
     }
 
-    /*handleBrandChange = e => {
-        this.setState({ brand: e.target.value });
-    }*/
+    handleBrandChange = e => {
+        this.setState({ brand_id: e.target.value });
+    }
 
     handleModelChange = e => {
         this.setState({ model: e.target.value });
@@ -91,10 +93,11 @@ export default class CreatePage extends Component {
                     <label>
                         Brand: 
                         <select onChange={this.handleBrandChange} value={this.state.brand}>
-                        <option value ="Genelec">Genelec</option>
-                        <option value ="ADAM Audio">ADAM Audio</option>
-                        <option value ="KRK">KRK</option>
-                        <option value ="JBL">JBL</option>
+                            {
+                                this.state.brands.map((brand, i) => {
+                                    return <option key={'brand' + i} value={brand.id} >{brand.name}</option>
+                                })
+                            }
                         </select> 
                     </label>
                     <label>
