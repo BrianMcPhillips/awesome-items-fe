@@ -29,7 +29,7 @@ export default class CreatePage extends Component {
           is_sick: this.state.is_sick,
           model: this.state.model,
           image: this.state.image,
-          brands_id: this.state.brand_id
+          brands_id: this.state.brands_id
         
         });
 
@@ -61,7 +61,7 @@ export default class CreatePage extends Component {
     }
 
     handleBrandChange = e => {
-        this.setState({ brand_id: e.target.value });
+        this.setState({ brands_id: e.target.value });
     }
 
     handleModelChange = e => {
@@ -92,10 +92,10 @@ export default class CreatePage extends Component {
                         </label>
                     <label>
                         Brand: 
-                        <select onChange={this.handleBrandChange} value={this.state.brand}>
+                        <select onChange={this.handleBrandChange} >
                             {
-                                this.state.brands.map((brand, i) => {
-                                    return <option key={'brand' + i} value={brand.id} >{brand.name}</option>
+                                this.state.brands.map((brand) => {
+                                    return <option key={`${brand.id} + ${brand.name}`} value={brand.id} >{brand.name}</option>
                                 })
                             }
                         </select> 

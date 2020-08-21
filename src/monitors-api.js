@@ -1,7 +1,7 @@
 
 import request from 'superagent';
 
-const URL = 'http://localhost:4000';
+const URL = process.env.REACT_APP_API;
 
 export function fetchMonitors() {
     try {

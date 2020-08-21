@@ -46,7 +46,6 @@ export default class DetailPage extends Component {
                     cool_factor: this.state.cool_factor,
                     type: this.state.type,
                     is_sick: this.state.is_sick,
-                    //brand: this.state.brand,
                     model: this.state.model,
                     image: this.state.image,
                     brands_id: this.state.brands_id,
@@ -131,9 +130,9 @@ export default class DetailPage extends Component {
                 </label>
                 <label>
                     Brand:
-                    <select onChange={this.handleBrandsChange} value={this.state.brands_id}>
+                    <select onChange={this.handleBrandsChange} >
                         {
-                            this.state.brands.map((brand, i) => <option key={'brandOption' + i} value={brand.id}>{brand.name}</option>)
+                            this.state.brands.map((brand) => <option key={'brandOption'} value={brand.id}>{brand.name}</option>)
                         }
                     </select>
                 </label>
