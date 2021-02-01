@@ -1,10 +1,15 @@
 
 import request from 'superagent';
 
-const URL = 'https://pure-falls-15312.herokuapp.com';
+const URL = process.env.REACT_APP_API;
 
 export function fetchMonitors() {
-    return request.get(`${URL}/monitors`);
+    try {
+        return request.get(`${URL}/monitors`);
+
+    } catch(e) {
+        return { error: e.message }
+    }
 }
 
 export function fetchMonitor(id) {
@@ -13,4 +18,20 @@ export function fetchMonitor(id) {
 
 export function createMonitor(monitorData) {
     return request.post(`${URL}/monitors`, monitorData)
+}
+export function fetchBrands() {
+    try{
+        return request.get(`${URL}/brands`);
+    } catch(e) {
+        return { error: e.message }
+    }
+}
+
+export function updateMonitor(id, updatedMonitor) {
+    console.log(updatedMonitor)
+    return request.put(`${URL}/monitors/${id}`, updatedMonitor);
+}
+
+export function deleteMonitor(id) {
+    return request.delete(`${URL}/monitors/${id}`);
 }

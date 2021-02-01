@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createMonitor } from './monitors-api.js';
+import { createMonitor, fetchBrands } from './monitors-api.js';
 import './App.css';
 
 export default class CreatePage extends Component {
@@ -7,32 +7,46 @@ export default class CreatePage extends Component {
         cool_factor: 7,
         type: 'monitor',
         is_sick: false,
-        brand: 'Genelec',
         model: '8010A',
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSXvdxydVBGi8bDW0dDSMxDEfiaYXF49Au1SG4kfNmYTdbayh3NRcJnisqicjctk3bdj0W9qdg&usqp=CAc', 
+        brands_id: 1,
+        brands: [],
+    }
+
+    componentDidMount = async () => {
+        const brandsData = await fetchBrands();
+        this.setState({
+            brands: brandsData.body
+        })
     }
 
     handleSubmit = async (e) => {
         e.preventDefault();
-
+        try {
         await createMonitor({
           cool_factor: this.state.cool_factor,
           type: this.state.type,
           is_sick: this.state.is_sick,
-          brand: this.state.brand,
           model: this.state.model,
-          image: this.state.image
+          image: this.state.image,
+          brands_id: this.state.brands_id
+        
         });
 
         this.setState({
           cool_factor: 7,
           type: '',
           is_sick: '',
-          brand: '',
           model: '',
           image: '',
-        })
+          brands_id: 1,
+        
+        });
+        this.props.history.push('/');
+    } catch(e) {
+        console.log(e.message)
     }
+}
 
     handleCoolFactorChange = e => {
         this.setState({ cool_factor: e.target.value });
@@ -47,7 +61,7 @@ export default class CreatePage extends Component {
     }
 
     handleBrandChange = e => {
-        this.setState({ brand: e.target.value });
+        this.setState({ brands_id: e.target.value });
     }
 
     handleModelChange = e => {
@@ -78,11 +92,12 @@ export default class CreatePage extends Component {
                         </label>
                     <label>
                         Brand: 
-                        <select onChange={this.handleBrandChange} value={this.state.brand}>
-                        <option value ="Genelec">Genelec</option>
-                        <option value ="ADAM Audio">ADAM Audio</option>
-                        <option value ="KRK">KRK</option>
-                        <option value ="JBL">JBL</option>
+                        <select onChange={this.handleBrandChange} >
+                            {
+                                this.state.brands.map((brand) => {
+                                    return <option key={`${brand.id} + ${brand.name}`} value={brand.id} >{brand.name}</option>
+                                })
+                            }
                         </select> 
                     </label>
                     <label>

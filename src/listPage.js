@@ -10,9 +10,11 @@ class ListPage extends React.Component {
 
   componentDidMount = async () => {
     const data = await fetchMonitors()
+    
 
     this.setState({
-      monitors: data.body
+      monitors: data.body,
+      
     })
   }
 
@@ -23,9 +25,9 @@ class ListPage extends React.Component {
             this.state.monitors.map((monitor) => {
               return <Link className="monitor" to={`/detail/${monitor.id}`} key={`${monitor.id}-${monitor.model}`}>
                 <img src={monitor.image} alt={monitor.model} />
-                <p>Brand: {monitor.brand}</p>
+                <p>Brand: {monitor.brands_id}</p>
                 <p>Model: {monitor.model}</p>
-                <p>Is Sick?: {monitor.is_sick}</p>
+                <p>Is Sick?: {monitor.is_sick ? 'Yes' : 'No'}</p>
                 <p>Coolness Factor: {monitor.cool_factor}</p>
               </Link>
             })
